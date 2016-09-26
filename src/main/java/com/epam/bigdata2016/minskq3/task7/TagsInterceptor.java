@@ -42,12 +42,12 @@ public class TagsInterceptor implements Interceptor {
         List<String> params = Arrays.asList(eventBodyStr.split("\\t"));
 
 
-        String eventDate =  params.get(1).substring(0,8);
+        String eventDate = params.get(1).substring(0, 8);
         headers.put("event_date", eventDate);
 
-        String userTagsId =  params.get(20);
-        String userTags = tagsDictionary.getOrDefault(userTagsId,"");
-        headers.put("tags_added", StringUtils.isNotBlank(userTags) ? "true" : "false" );
+        String userTagsId = params.get(20);
+        String userTags = tagsDictionary.getOrDefault(userTagsId, "");
+        headers.put("tags_added", StringUtils.isNotBlank(userTags) ? "true" : "false");
         params.add(userTags);
 
         event.setHeaders(headers);
@@ -81,7 +81,6 @@ public class TagsInterceptor implements Interceptor {
             return new TagsInterceptor();
         }
     }
-
 
     private void prepareTagsDictionary() {
         try {
