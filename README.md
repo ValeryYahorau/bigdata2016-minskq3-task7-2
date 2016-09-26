@@ -1,0 +1,1 @@
+# bigdata2016-minskq3-task7-2
