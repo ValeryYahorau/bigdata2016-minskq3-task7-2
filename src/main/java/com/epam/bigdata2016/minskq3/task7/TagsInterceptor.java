@@ -14,7 +14,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -39,23 +38,17 @@ public class TagsInterceptor implements Interceptor {
         Map<String, String> headers = event.getHeaders();
 
         String eventBodyStr = new String(event.getBody());
-        log.info("TagsInterceptor eventBodyStr " + eventBodyStr);
+        if (StringUtils.isNotBlank(eventBodyStr) && StringUtils.isNotEmpty(eventBodyStr)) {
+            log.info("TagsInterceptor eventBodyStr " + eventBodyStr);
 
-        log.info("TagsInterceptor eventBodyStr[] " + eventBodyStr.split("\\t").length);
-        List<String> params = new ArrayList<>(Arrays.asList(eventBodyStr.split("\\t")));
-        log.info("TagsInterceptor params " + params.size());
+            String[] params = eventBodyStr.split("\\s+");
 
+            String userTagsId = params[params.length-2];
+            String userTags = tagsDictionary.getOrDefault(userTagsId, "");
+            headers.put("tags_added", StringUtils.isNotBlank(userTags) ? "true" : "false");
 
-        String eventDate = params.get(1).substring(0, 8);
-        headers.put("event_date", eventDate);
-
-        String userTagsId = params.get(20);
-        String userTags = tagsDictionary.getOrDefault(userTagsId, "");
-        headers.put("tags_added", StringUtils.isNotBlank(userTags) ? "true" : "false");
-        params.add(userTags);
-
-        event.setHeaders(headers);
-        event.setBody(String.join("\t", params).getBytes());
+            event.setHeaders(headers);
+        }
         return event;
     }
 
