@@ -39,7 +39,7 @@ public class TagsInterceptor implements Interceptor {
         Map<String, String> headers = event.getHeaders();
 
         String eventBodyStr = new String(event.getBody());
-        List<String> params = Arrays.asList(eventBodyStr.split("\\t"));
+        List<String> params = new ArrayList<>(Arrays.asList(eventBodyStr.split("\\t")));
 
 
         String eventDate = params.get(1).substring(0, 8);
