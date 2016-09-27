@@ -50,7 +50,7 @@ public class TagsInterceptor implements Interceptor {
 
             event.setHeaders(headers);
             StringBuilder sb = new StringBuilder(eventBodyStr);
-            sb.append("\\t");
+            sb.append("\t");
             sb.append(userTags);
             log.info("TagsInterceptor sb " + sb.toString());
 
