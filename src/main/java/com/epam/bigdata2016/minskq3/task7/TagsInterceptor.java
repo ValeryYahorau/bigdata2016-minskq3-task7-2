@@ -46,11 +46,14 @@ public class TagsInterceptor implements Interceptor {
             String userTagsId = params[params.length-2];
             String userTags = tagsDictionary.getOrDefault(userTagsId, "");
             headers.put("tags_added", StringUtils.isNotBlank(userTags) ? "true" : "false");
+            log.info("TagsInterceptor userTags " + userTags);
 
             event.setHeaders(headers);
             StringBuilder sb = new StringBuilder(eventBodyStr);
             sb.append("\t");
             sb.append(userTags);
+            log.info("TagsInterceptor sb " + sb.toString());
+
 
             event.setBody(sb.toString().getBytes());
         }
@@ -94,6 +97,7 @@ public class TagsInterceptor implements Interceptor {
             List<String> lines = new ArrayList<>();
             String line;
             while ((line = br.readLine()) != null) {
+                log.info("Dictionary line " + line);
                 lines.add(line);
             }
             this.tagsDictionary = lines.stream()
