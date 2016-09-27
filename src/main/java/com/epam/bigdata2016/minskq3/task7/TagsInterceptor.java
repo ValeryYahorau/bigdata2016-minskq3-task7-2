@@ -48,6 +48,11 @@ public class TagsInterceptor implements Interceptor {
             headers.put("tags_added", StringUtils.isNotBlank(userTags) ? "true" : "false");
 
             event.setHeaders(headers);
+            StringBuilder sb = new StringBuilder(eventBodyStr);
+            sb.append("\t");
+            sb.append(userTags);
+
+            event.setBody(sb.toString().getBytes());
         }
         return event;
     }
