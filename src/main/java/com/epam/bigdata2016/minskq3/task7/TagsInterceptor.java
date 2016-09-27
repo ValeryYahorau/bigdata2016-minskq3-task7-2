@@ -39,19 +39,21 @@ public class TagsInterceptor implements Interceptor {
         Map<String, String> headers = event.getHeaders();
 
         String eventBodyStr = new String(event.getBody());
-        List<String> params = new ArrayList<>(Arrays.asList(eventBodyStr.split("\\t")));
+        if (StringUtils.isNotEmpty(eventBodyStr) && StringUtils.isNotBlank(eventBodyStr)) {
+            List<String> params = new ArrayList<>(Arrays.asList(eventBodyStr.split("\\t")));
 
 
-        String eventDate = params.get(1).substring(0, 8);
-        headers.put("event_date", eventDate);
+            String eventDate = params.get(1).substring(0, 8);
+            headers.put("event_date", eventDate);
 
-        String userTagsId = params.get(params.size()-2);
-        String userTags = tagsDictionary.getOrDefault(userTagsId, "");
-        headers.put("tags_added", StringUtils.isNotBlank(userTags) ? "true" : "false");
-        params.add(userTags);
+            String userTagsId = params.get(params.size() - 2);
+            String userTags = tagsDictionary.getOrDefault(userTagsId, "");
+            headers.put("tags_added", StringUtils.isNotBlank(userTags) ? "true" : "false");
+            params.add(userTags);
 
-        event.setHeaders(headers);
-        event.setBody(String.join("\t", params).getBytes());
+            event.setHeaders(headers);
+            event.setBody(String.join("\t", params).getBytes());
+        }
         return event;
     }
 
